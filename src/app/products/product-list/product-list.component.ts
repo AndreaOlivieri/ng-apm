@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import fromProductState, {
-  currentProductSelector,
+  currentProductSelector, errorSelector,
   productsSelector,
   showProductCodeSelector
 } from "../state/product.state";
@@ -13,6 +13,7 @@ import {
   SetCurrentProductAction,
   ToggleProductCodeAction
 } from '../state/product.actions';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'pm-product-list',
@@ -25,10 +26,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   displayCode: boolean;
 
-  products: Product[];
-
   // Used to highlight the selected product in the list
   selectedProduct: Product | null;
+  products$: Observable<Product[]>;
+  errorMessage$: Observable<string>;
 
   constructor(
     private productService: ProductService,
@@ -40,8 +41,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
       .subscribe(currentProduct => this.selectedProduct = currentProduct);
 
     this.store.dispatch(new LoadAction());
-    this.store.pipe(select(productsSelector))
-      .subscribe((products: Product[]) => this.products = products);
+    this.products$ = this.store.pipe(select(productsSelector));
+    this.errorMessage$ = this.store.pipe(select(errorSelector));
     // this.productService.getProducts().subscribe({
     //   next: (products: Product[]) => this.products = products,
     //   error: (err: any) => this.errorMessage = err.error
