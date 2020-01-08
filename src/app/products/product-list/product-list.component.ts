@@ -4,9 +4,9 @@ import { Subscription } from 'rxjs';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
-import {TOGGLE_PRODUCT_CODE} from "../state/product.reducer";
 import fromProductState, { showProductCodeSelector } from "../state/product.state";
 import { Store, select } from '@ngrx/store';
+import { ToggleProductCodeAction } from '../state/product.actions';
 
 @Component({
   selector: 'pm-product-list',
@@ -49,10 +49,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   checkChanged(value: boolean): void {
-    this.store.dispatch({
-      type: TOGGLE_PRODUCT_CODE,
-      payload: value
-    });
+    this.store.dispatch(new ToggleProductCodeAction(value));
   }
 
   newProduct(): void {
