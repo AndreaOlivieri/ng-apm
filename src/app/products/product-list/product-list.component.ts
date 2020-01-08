@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import {TOGGLE_PRODUCT_CODE} from "../state/product.reducer";
-import fromProductState from "../state/product.state";
+import fromProductState, { showProductCodeSelector } from "../state/product.state";
 import { Store, select } from '@ngrx/store';
 
 @Component({
@@ -40,12 +40,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
       error: (err: any) => this.errorMessage = err.error
     });
 
-    this.store.pipe(select('products'))
-      .subscribe(products => {
-        if (products) {
-          this.displayCode = products.showProductCode;
-        }
-      });
+    this.store.pipe(select(showProductCodeSelector))
+      .subscribe(showProductCode => this.displayCode = showProductCode);
   }
 
   ngOnDestroy(): void {

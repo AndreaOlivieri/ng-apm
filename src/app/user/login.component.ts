@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from './auth.service';
 import { Store, select } from '@ngrx/store';
 import {TOGGLE_MASK_USERNAME} from "./state/user.reducer";
+import fromUserState, {showMaskUsernameSelector} from "./state/user.state";
 
 @Component({
   templateUrl: './login.component.html',
@@ -17,18 +18,15 @@ export class LoginComponent implements OnInit {
   maskUserName: boolean;
 
   constructor(
-    private store: Store<any>,
+    private store: Store<fromUserState>,
     private authService: AuthService,
     private router: Router) {
   }
 
   ngOnInit(): void {
-    this.store.pipe(select('user'))
-      .subscribe(user => {
-        if (user) {
-          this.maskUserName = user.showMaskUsername;
-        }
-      });
+    this.store
+      .pipe(select(showMaskUsernameSelector))
+      .subscribe(showMaskUsername => this.maskUserName = showMaskUsername);
   }
 
   cancel(): void {

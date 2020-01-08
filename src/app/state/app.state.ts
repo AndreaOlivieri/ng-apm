@@ -1,4 +1,3 @@
-interface AppState {
-  user: any
-}
+interface AppState {};
+
 export default AppState;
