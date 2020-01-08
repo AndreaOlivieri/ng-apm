@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 import {TOGGLE_PRODUCT_CODE} from "../state/product.reducer";
+import fromProductState from "../state/product.state";
 import { Store, select } from '@ngrx/store';
 
 @Component({
@@ -26,7 +27,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   constructor(
     private productService: ProductService,
-    private store: Store<any>,
+    private store: Store<fromProductState>,
   ) { }
 
   ngOnInit(): void {
