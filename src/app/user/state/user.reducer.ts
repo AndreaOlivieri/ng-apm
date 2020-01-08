@@ -1,10 +1,9 @@
 import {initUserState, UserState} from "./user.state";
+import {UserActions, UserActionTypes} from "./user.actions";
 
-export const TOGGLE_MASK_USERNAME = 'TOGGLE_MASK_USERNAME';
-
-export function reducer(state: UserState = initUserState, action): UserState {
+export function reducer(state: UserState = initUserState, action: UserActions): UserState {
   switch (action.type) {
-    case TOGGLE_MASK_USERNAME:
+    case UserActionTypes.ToggleMaskUsername:
       return {
         ...state,
         showMaskUsername: action.payload
