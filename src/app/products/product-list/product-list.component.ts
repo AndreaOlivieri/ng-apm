@@ -2,10 +2,14 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
-import fromProductState, {currentProductSelector, showProductCodeSelector} from "../state/product.state";
+import fromProductState, {
+  currentProductSelector,
+  productsSelector,
+  showProductCodeSelector
+} from "../state/product.state";
 import { Store, select } from '@ngrx/store';
 import {
-  InitializeCurrentProductAction,
+  InitializeCurrentProductAction, LoadAction,
   SetCurrentProductAction,
   ToggleProductCodeAction
 } from '../state/product.actions';
@@ -35,10 +39,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.store.pipe(select(currentProductSelector))
       .subscribe(currentProduct => this.selectedProduct = currentProduct);
 
-    this.productService.getProducts().subscribe({
-      next: (products: Product[]) => this.products = products,
-      error: (err: any) => this.errorMessage = err.error
-    });
+    this.store.dispatch(new LoadAction());
+    this.store.pipe(select(productsSelector))
+      .subscribe((products: Product[]) => this.products = products);
+    // this.productService.getProducts().subscribe({
+    //   next: (products: Product[]) => this.products = products,
+    //   error: (err: any) => this.errorMessage = err.error
+    // });
 
     this.store.pipe(select(showProductCodeSelector))
       .subscribe(showProductCode => this.displayCode = showProductCode);
