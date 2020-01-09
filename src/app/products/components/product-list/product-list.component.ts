@@ -8,29 +8,30 @@ import { Product } from '../../product';
 })
 export class ProductListComponent implements OnInit {
   pageTitle = 'Products';
+
   @Input() errorMessage: string;
   @Input() displayCode: boolean;
-  @Input() selectedProduct: Product;
   @Input() products: Product[];
-  @Output() onCheckChanged = new EventEmitter<boolean>();
-  @Output() onNewProduct = new EventEmitter<void>();
-  @Output() onProductSelected = new EventEmitter<Product>();
+  @Input() selectedProduct: Product;
+
+  @Output() checkChanged = new EventEmitter<boolean>();
+  @Output() productInitializated = new EventEmitter<void>();
+  @Output() productSelected = new EventEmitter<Product>();
 
   constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  changeCheck(value: boolean): void {
+    this.checkChanged.emit(value);
   }
 
-  checkChanged(value: boolean): void {
-    this.onCheckChanged.emit(value);
+  initProduct(): void {
+    this.productInitializated.emit();
   }
 
-  newProduct(): void {
-    this.onNewProduct.emit();
-  }
-
-  productSelected(product: Product): void {
-    this.onProductSelected.emit(product);
+  selectProduct(product: Product): void {
+    this.productSelected.emit(product);
   }
 
 }

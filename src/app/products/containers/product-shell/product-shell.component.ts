@@ -8,10 +8,13 @@ import fromProductState, {
   showProductCodeSelector
 } from "../../state/product.state";
 import {
+  ClearCurrentProductAction,
+  DeleteAction,
   InitializeCurrentProductAction,
   LoadAction,
   SetCurrentProductAction,
-  ToggleProductCodeAction
+  ToggleProductCodeAction,
+  CreateAction, UpdateAction
 } from "../../state/product.actions";
 import {ProductService} from "../../product.service";
 import { Store, select } from '@ngrx/store';
@@ -22,7 +25,7 @@ import { Store, select } from '@ngrx/store';
 export class ProductShellComponent implements OnInit {
 
   displayCode$: Observable<boolean>;
-  selectedProduct$: Observable<Product>;
+  currentProduct$: Observable<Product>;
   products$: Observable<Product[]>;
   errorMessage$: Observable<string>;
 
@@ -34,7 +37,7 @@ export class ProductShellComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(new LoadAction());
 
-    this.selectedProduct$ = this.store.pipe(select(currentProductSelector));
+    this.currentProduct$ = this.store.pipe(select(currentProductSelector));
     this.products$ = this.store.pipe(select(productsSelector));
     this.errorMessage$ = this.store.pipe(select(errorSelector));
     this.displayCode$ = this.store.pipe(select(showProductCodeSelector));
@@ -50,5 +53,21 @@ export class ProductShellComponent implements OnInit {
 
   setCurrentProduct(product: Product): void {
     this.store.dispatch(new SetCurrentProductAction(product));
+  }
+
+  clearCurrentProduct() {
+    this.store.dispatch(new ClearCurrentProductAction());
+  }
+
+  createProduct(product: Product) {
+    this.store.dispatch(new CreateAction(product));
+  }
+
+  updateProduct(product: Product) {
+    this.store.dispatch(new UpdateAction(product));
+  }
+
+  deleteProduct(product: Product) {
+    this.store.dispatch(new DeleteAction(product));
   }
 }
