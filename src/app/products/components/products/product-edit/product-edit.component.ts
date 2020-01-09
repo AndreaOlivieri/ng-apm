@@ -1,18 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Product } from '../product';
-import { ProductService } from '../product.service';
-import { GenericValidator } from '../../shared/generic-validator';
-import { NumberValidators } from '../../shared/number.validator';
-import fromProductState, {currentProductSelector} from "../state/product.state";
+import { Product } from '../../../product';
+import { ProductService } from '../../../product.service';
+import { GenericValidator } from '../../../../shared/generic-validator';
+import { NumberValidators } from '../../../../shared/number.validator';
+import fromProductState, {currentProductSelector} from "../../../state/product.state";
 import { select, Store } from '@ngrx/store';
 import {
   ClearCurrentProductAction,
   UpdateAction,
   CreateAction,
   DeleteAction
-} from "../state/product.actions";
+} from "../../../state/product.actions";
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
