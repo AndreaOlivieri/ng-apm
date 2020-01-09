@@ -1,4 +1,4 @@
-import {Product} from "../product";
+import {newProduct, Product} from "../product";
 import AppState from "../../state/app.state";
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
@@ -43,7 +43,11 @@ export const currentProductIdSelector = createSelector(
 export const currentProductSelector = createSelector(
   productStateSelector,
   currentProductIdSelector,
-  (state, currentProductId) => state.products.find(p => p.id === currentProductId)
+  (state, currentProductId) => {
+    return (currentProductId === 0)
+      ? newProduct()
+      : state.products.find(p => p.id === currentProductId);
+  }
 );
 
 export const errorSelector = createSelector(

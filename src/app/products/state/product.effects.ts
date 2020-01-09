@@ -3,7 +3,14 @@ import { Injectable } from '@angular/core';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import {ProductService} from "../product.service";
-import {LoadAction, LoadErrorAction, LoadSuccessAction, ProductActionTypes} from "./product.actions";
+import {
+  LoadAction,
+  LoadErrorAction,
+  LoadSuccessAction,
+  ProductActionTypes,
+  UpdateAction, UpdateErrorAction,
+  UpdateSuccessAction
+} from "./product.actions";
 import { Product } from '../product';
 import { of } from 'rxjs';
 
@@ -23,6 +30,19 @@ export class ProductEffects {
           return new LoadSuccessAction(products);
         }),
         catchError(err => of(new LoadErrorAction(err)))
+      );
+    })
+  );
+
+  @Effect()
+  updateProduct$ = this.actions$.pipe(
+    ofType(ProductActionTypes.Update),
+    mergeMap((action: UpdateAction) => {
+      return this.productService.updateProduct(action.payload).pipe(
+        map((product: Product) => {
+          return new UpdateSuccessAction(product);
+        }),
+        catchError(err => of(new UpdateErrorAction(err)))
       );
     })
   );

@@ -43,10 +43,6 @@ export class ProductListComponent implements OnInit, OnDestroy {
     this.store.dispatch(new LoadAction());
     this.products$ = this.store.pipe(select(productsSelector));
     this.errorMessage$ = this.store.pipe(select(errorSelector));
-    // this.productService.getProducts().subscribe({
-    //   next: (products: Product[]) => this.products = products,
-    //   error: (err: any) => this.errorMessage = err.error
-    // });
 
     this.store.pipe(select(showProductCodeSelector))
       .subscribe(showProductCode => this.displayCode = showProductCode);

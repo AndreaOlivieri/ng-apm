@@ -7,7 +7,7 @@ import { GenericValidator } from '../../shared/generic-validator';
 import { NumberValidators } from '../../shared/number.validator';
 import fromProductState, {currentProductSelector} from "../state/product.state";
 import { select, Store } from '@ngrx/store';
-import {ClearCurrentProductAction, SetCurrentProductAction} from "../state/product.actions";
+import {ClearCurrentProductAction, SetCurrentProductAction, UpdateAction} from "../state/product.actions";
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
@@ -148,10 +148,11 @@ export class ProductEditComponent implements OnInit, OnDestroy {
             error: err => this.errorMessage = err.error
           });
         } else {
-          this.productService.updateProduct(p).subscribe({
-            next: product => this.store.dispatch(new SetCurrentProductAction(product)),
-            error: err => this.errorMessage = err.error
-          });
+          this.store.dispatch(new UpdateAction(p));
+          // this.productService.updateProduct(p).subscribe({
+          //   next: product => this.store.dispatch(new SetCurrentProductAction(product)),
+          //   error: err => this.errorMessage = err.error
+          // });
         }
       }
     } else {

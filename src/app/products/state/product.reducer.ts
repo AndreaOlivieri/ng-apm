@@ -1,6 +1,6 @@
 import {initProductState, ProductState} from "./product.state";
 import {ProductActionTypes, ProductActions} from "./product.actions";
-import {Product} from "../product";
+import {newProduct, Product} from "../product";
 
 export function reducer(state: ProductState = initProductState, action: ProductActions): ProductState {
   switch (action.type) {
@@ -12,8 +12,7 @@ export function reducer(state: ProductState = initProductState, action: ProductA
     case ProductActionTypes.SetCurrentProduct:
       return {
         ...state,
-        currentProductId: action.payload.id,
-        products: upsertProductById(action.payload, state.products)
+        currentProductId: action.payload.id
       };
     case ProductActionTypes.ClearCurrentProduct:
       return {
@@ -23,14 +22,7 @@ export function reducer(state: ProductState = initProductState, action: ProductA
     case ProductActionTypes.InitializeCurrentProduct:
       return {
         ...state,
-        currentProductId: 0,
-        products: upsertProductById({
-          id: 0,
-          productName: '',
-          productCode: 'New',
-          description: '',
-          starRating: 0
-        }, state.products)
+        currentProductId: 0
       };
     case ProductActionTypes.LoadSuccess:
       return {
@@ -44,11 +36,28 @@ export function reducer(state: ProductState = initProductState, action: ProductA
         products: [],
         error: action.payload
       };
+    case ProductActionTypes.UpdateSuccess:
+      return {
+        ...state,
+        products: upsertProductById(action.payload, state.products),
+        error: ''
+      };
+    case ProductActionTypes.UpdateError:
+      return {
+        ...state,
+        error: action.payload
+      };
     default:
       return state;
   }
 }
 
-function upsertProductById(newProduct: Product, products: Product[] = []) {
-  return [newProduct].concat(products.filter(p => p.id !== newProduct.id));
+function upsertProductById(upsertProduct: Product, products: Product[] = []) {
+  const index = products.findIndex(p => p.id === upsertProduct.id);
+  if (index > 0) {
+    products[index] = upsertProduct;
+  } else {
+    products.push(upsertProduct);
+  }
+  return products;
 }
