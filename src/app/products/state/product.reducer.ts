@@ -33,14 +33,15 @@ export function reducer(state: ProductState = initProductState, action: ProductA
     case ProductActionTypes.UpdateSuccess:
       return {
         ...state,
-        products: upsertProductById(action.payload, state.products),
+        currentProductId: action.payload.id,
+        products: state.products.map(p => p.id === action.payload.id ? action.payload : p),
         error: ''
       };
     case ProductActionTypes.CreateSuccess:
       return {
         ...state,
         currentProductId: action.payload.id,
-        products: upsertProductById(action.payload, state.products),
+        products: [...state.products, action.payload],
         error: ''
       };
     case ProductActionTypes.LoadError:
@@ -54,14 +55,4 @@ export function reducer(state: ProductState = initProductState, action: ProductA
     default:
       return state;
   }
-}
-
-function upsertProductById(upsertProduct: Product, products: Product[] = []) {
-  const index = products.findIndex(p => p.id === upsertProduct.id);
-  if (index > 0) {
-    products[index] = upsertProduct;
-  } else {
-    products.push(upsertProduct);
-  }
-  return products;
 }
