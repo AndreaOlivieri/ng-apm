@@ -7,7 +7,12 @@ import { GenericValidator } from '../../shared/generic-validator';
 import { NumberValidators } from '../../shared/number.validator';
 import fromProductState, {currentProductSelector} from "../state/product.state";
 import { select, Store } from '@ngrx/store';
-import {ClearCurrentProductAction, SetCurrentProductAction, UpdateAction, CreateAction} from "../state/product.actions";
+import {
+  ClearCurrentProductAction,
+  UpdateAction,
+  CreateAction,
+  DeleteAction
+} from "../state/product.actions";
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
@@ -123,10 +128,7 @@ export class ProductEditComponent implements OnInit, OnDestroy {
   deleteProduct(): void {
     if (this.product && this.product.id) {
       if (confirm(`Really delete the product: ${this.product.productName}?`)) {
-        this.productService.deleteProduct(this.product.id).subscribe({
-          next: () => this.store.dispatch(new ClearCurrentProductAction()),
-          error: err => this.errorMessage = err.error
-        });
+        this.store.dispatch(new DeleteAction(this.product));
       }
     } else {
       // No need to delete, it was never saved

@@ -32,12 +32,13 @@ export class ProductService {
       );
   }
 
-  deleteProduct(id: number): Observable<{}> {
+  deleteProduct(product: Product): Observable<Product> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const url = `${this.productsUrl}/${id}`;
+    const url = `${this.productsUrl}/${product.id}`;
     return this.http.delete<Product>(url, { headers })
       .pipe(
-        tap(data => console.log('deleteProduct: ' + id)),
+        tap(() => console.log('deleteProduct: ' + product.id)),
+        map(() => product),
         catchError(this.handleError)
       );
   }

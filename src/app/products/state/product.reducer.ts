@@ -44,9 +44,17 @@ export function reducer(state: ProductState = initProductState, action: ProductA
         products: [...state.products, action.payload],
         error: ''
       };
+    case ProductActionTypes.DeleteSuccess:
+      return {
+        ...state,
+        currentProductId: null,
+        products: state.products.filter(p => p.id !== action.payload.id),
+        error: ''
+      };
     case ProductActionTypes.LoadError:
     case ProductActionTypes.UpdateError:
     case ProductActionTypes.CreateError:
+    case ProductActionTypes.DeleteError:
       return {
         ...state,
         products: [],

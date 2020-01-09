@@ -4,7 +4,7 @@ import { mergeMap, map, catchError } from 'rxjs/operators';
 
 import {ProductService} from "../product.service";
 import {
-  CreateAction, CreateErrorAction, CreateSuccessAction,
+  CreateAction, CreateErrorAction, CreateSuccessAction, DeleteAction, DeleteErrorAction, DeleteSuccessAction,
   LoadAction,
   LoadErrorAction,
   LoadSuccessAction,
@@ -57,6 +57,19 @@ export class ProductEffects {
           return new CreateSuccessAction(product);
         }),
         catchError(err => of(new CreateErrorAction(err)))
+      );
+    })
+  );
+
+  @Effect()
+  deleteProduct$ = this.actions$.pipe(
+    ofType(ProductActionTypes.Delete),
+    mergeMap((action: DeleteAction) => {
+      return this.productService.deleteProduct(action.payload).pipe(
+        map((product: Product) => {
+          return new DeleteSuccessAction(product);
+        }),
+        catchError(err => of(new DeleteErrorAction(err)))
       );
     })
   );

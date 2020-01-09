@@ -14,7 +14,10 @@ export enum ProductActionTypes {
   UpdateError = '[Product] Update Product with errors',
   Create = '[Product] Create product',
   CreateSuccess = '[Product] Create Product successfully',
-  CreateError = '[Product] Create Product with errors'
+  CreateError = '[Product] Create Product with errors',
+  Delete = '[Product] Delete product',
+  DeleteSuccess = '[Product] Delete Product successfully',
+  DeleteError = '[Product] Delete Product with errors'
 }
 
 export class ToggleProductCodeAction implements Action {
@@ -82,6 +85,21 @@ export class CreateErrorAction implements Action {
   constructor(public payload: string) {}
 }
 
+export class DeleteAction implements Action {
+  readonly type = ProductActionTypes.Delete;
+  constructor(public payload: Product) {}
+}
+
+export class DeleteSuccessAction implements Action {
+  readonly type = ProductActionTypes.DeleteSuccess;
+  constructor(public payload: Product) {}
+}
+
+export class DeleteErrorAction implements Action {
+  readonly type = ProductActionTypes.DeleteError;
+  constructor(public payload: string) {}
+}
+
 export type ProductActions = ToggleProductCodeAction
   | SetCurrentProductAction
   | ClearCurrentProductAction
@@ -94,4 +112,7 @@ export type ProductActions = ToggleProductCodeAction
   | UpdateErrorAction
   | CreateAction
   | CreateSuccessAction
-  | CreateErrorAction;
+  | CreateErrorAction
+  | DeleteAction
+  | DeleteSuccessAction
+  | DeleteErrorAction;
