@@ -30,21 +30,25 @@ export function reducer(state: ProductState = initProductState, action: ProductA
         products: action.payload,
         error: ''
       };
-    case ProductActionTypes.LoadError:
-      return {
-        ...state,
-        products: [],
-        error: action.payload
-      };
     case ProductActionTypes.UpdateSuccess:
       return {
         ...state,
         products: upsertProductById(action.payload, state.products),
         error: ''
       };
-    case ProductActionTypes.UpdateError:
+    case ProductActionTypes.CreateSuccess:
       return {
         ...state,
+        currentProductId: action.payload.id,
+        products: upsertProductById(action.payload, state.products),
+        error: ''
+      };
+    case ProductActionTypes.LoadError:
+    case ProductActionTypes.UpdateError:
+    case ProductActionTypes.CreateError:
+      return {
+        ...state,
+        products: [],
         error: action.payload
       };
     default:
