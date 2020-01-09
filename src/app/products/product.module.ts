@@ -4,8 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
 
 import { ProductShellComponent } from './containers/product-shell/product-shell.component';
-import { ProductListComponent } from './components/products/product-list/product-list.component';
-import { ProductEditComponent } from './components/products/product-edit/product-edit.component';
+import { ProductListComponent } from './components/product-list/product-list.component';
+import { ProductEditComponent } from './components/product-edit/product-edit.component';
 
 import { StoreModule } from '@ngrx/store';
 import {reducer} from "./state/product.reducer";
